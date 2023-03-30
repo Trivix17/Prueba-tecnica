@@ -1,0 +1,82 @@
+<div>
+  <!-- <p class="h1">¡Hola! 🚀</p>
+  <p class="h6 mb-5">La decisión de modificar esta vista y demostrar tus habilidades en CSS utilizando Bootstrap 5 es completamente tuya. 🦸‍♀️</p>
+
+  <p class="m-0">Prueba Técnica programador para <strong>Garantías Comunitarias Grupo S.A.</strong></p>
+  <p>Desarrollada y maquetada por <span class="fst-italic">Juan Camilo López Morales</span>.</p> -->
+  <div class="alert alert-success text-bg-dark text-center border-0" role="alert">
+    <h4 class="alert-heading">Bienvenido!</h4>
+    <p>En este apartado podras ver todas las peliculas que tiene algún comentario, disfruta de este espacio.</p>
+    <hr>
+    <p class="mb-0">Nota: Si deseas buscar alguna pelicula y agregar algún comentario, ingresa en la parte de <a href="#!/peliculas">peliculas</a> en el menu principal.</p>
+    <p class="mb-0">Nota 2:Solo se puede editar y eliminar los comentarios en la parte de pelicula, este espacio solo es para ver que comentarios son y cuales peliculas tienen.</p>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-3 g-4 m-5"  ng-controller="InicioController">
+    <div class="col" ng-Repeat="moviesComentada in moviesComentadas">
+      <div class="card bg-secondary shadow-sm h-100 border-0">
+        <img  height="280" src="https://image.tmdb.org/t/p/original{{moviesComentada.poster_path ? moviesComentada.poster_path : moviesComentada.backdrop_path }}" class="card-img-top" alt="{{moviesComentada.title}}">
+        <div class="card-body">
+          <h5 class="card-title">{{moviesComentada.title}}</h5>
+          <ul class="list-group">
+            <li class="list-group-item bg-secondary border-dark"><strong>Fecha de estreno </strong>{{moviesComentada.release_date}}</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <small class="text-muted">
+            <button ng-click="filtrar()" class="btn btn-dark border-dark col-12" data-bs-toggle="modal" data-bs-target="#viewCommentsMovie{{moviesComentada.id}}">
+              Ver comentarios
+            </button>
+          </small>
+        </div>
+      </div>
+      <div class="modal fade" id="viewCommentsMovie{{moviesComentada.id}}" tabindex="-1" aria-labelledby="viewCommentsMovie" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <!-- TODO: Agregar el titulo de la película. -->
+              <h1 class="modal-title fs-5" id="viewCommentsMovieLabel">Comentarios de la pelicula "{{moviesComentada.title}}"</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <ul class="list-group mb-2">
+                <!-- TODO: Listado de comentarios - Pueden ser editables o eliminados. -->
+                <li class="list-group-item" ng-repeat="comentariosInicio in comentariosInicio | filter:{idMovie: moviesComentada.id}">
+                  <form>
+                    <div class="row">
+                      <div class="col-2">
+                        <input type="text" id="idNuevoComentario{{comentariosInicio.id}}" class="form-control" value="{{comentariosInicio.id}}" disabled>                            
+                      </div>
+                      <div class="col-10">
+                        <textarea id="nuevoComentario{{comentariosInicio.id}}" class="form-control p-2" rows="1" disabled>{{comentariosInicio.comment}}</textarea>
+                      </div>
+                      <div class="col-12 mt-2">
+                        <div class="row">
+                          <!-- <div class="col-6" ng-controller="EditarController">
+                            <button ng-click="editarComentario(comentariosInicio.id)" class="btn btn-primary col-12">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                              </svg>
+                            </button>
+                          </div> -->
+                          <!-- <div class="col-12" ng-controller="eliminarController">
+                            <button ng-click="eliminarComentario(comentariosInicio.id)" class="btn btn-danger col-12">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                              </svg>
+                            </button>
+                          </div> -->
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </li>
+              </ul>
+            </div>  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

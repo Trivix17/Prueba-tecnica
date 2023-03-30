@@ -1,0 +1,99 @@
+<div class="mb-5">
+  <div class="mb-3">
+    <div ng-controller="PeliculasController">
+      <div class="card p-4 mb-3 bg-secondary">
+          <div class="row">
+            <div class="col-8">
+              <input type="text" class="form-control" ng-model="query" placeholder="ingresa el nombre de la pelicula que quieras buscar...">
+            </div>
+            <div class="col-4">
+              <button class="btn col-12 text-light"style="background-color:#121144;" ng-click="search()" id="button-addon2">Buscar pelicula</button>
+            </div>
+          </div>
+      </div>
+      <div class="container mt-5 row">
+        <!-- TODO: Con el ng-for deberás hacer que por cada pelicula que venga en la API, se deberá mostrar este mismo diseño de la carta. -->
+        <!-- no utilicé el ng -for porque según lo que investigue no se ocupa en la version de angularjs, igual no me proporcionaba ningun resultado-->
+        <div ng-repeat="movies in movies" class="col-4 mt-5">
+            <div class="card bg-secondary shadow-sm h-100 border-0">
+              <img class="object-fit-cover" height="250" src="https://image.tmdb.org/t/p/original{{movies.poster_path ? movies.poster_path : movies.backdrop_path }}" class="card-img-top">
+              <div class="card-body">
+                <h3 class="card-title">{{ movies.title }}</h3>
+                <p class="card-text">{{ movies.overview }}</p>
+              </div>
+              <div class="card-body">
+                <ul class="list-group mb-4">
+                  <li class="list-group-item bg-secondary border-dark"><strong>Fecha de estreno </strong>{{movies.release_date}}</li>
+                  <li class="list-group-item bg-secondary border-dark"><strong>Género</strong> <span ng-repeat="gener in movies.genre_ids"> - {{ gener}}</span ><span ng-if="movies.genre_ids.length == 0">sin registro</span></li>
+                </ul>
+              </div>
+              <div class="card-footer">
+                <button ng-click="filtrar()" class="btn btn-dark col-12" data-bs-toggle="modal" data-bs-target="#viewCommentsMovie{{movies.id}}">
+                  Ver comentarios
+                </button>
+              </div>
+            </div>
+          <div class="modal fade" id="viewCommentsMovie{{movies.id}}" tabindex="-1" aria-labelledby="viewCommentsMovie" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <!-- TODO: Agregar el titulo de la película. -->
+                  <h1 class="modal-title fs-5" id="viewCommentsMovieLabel">Comentarios de la pelicula "{{movies.title}}"</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <ul class="list-group mb-2">
+                    <!-- TODO: Listado de comentarios - Pueden ser editables o eliminados. -->
+                    <li class="list-group-item" ng-repeat="comentarios in comentarios | filter:{idMovie: movies.id}">
+                      <form ng-controller="EditarController">
+                        <div class="row">
+                          <div class="col-2">
+                            <input type="text" id="idNuevoComentario{{comentarios.id}}" class="form-control" value="{{comentarios.id}}" disabled>                            
+                          </div>
+                          <div class="col-10">
+                            <textarea id="nuevoComentario{{comentarios.id}}" class="form-control" rows="1">{{comentarios.comment}}</textarea>
+                          </div>
+                          <div class="col-12 mt-2">
+                            <div class="row">
+                              <div class="col-6">
+                                <button ng-click="editarComentario(comentarios.id)" class="btn btn-primary col-12">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                  </svg>
+                                </button>
+                              </div>
+                              <div class="col-6">
+                                <div ng-controller="eliminarController">
+                                  <button ng-click="eliminarComentario(comentarios.id)" class="btn btn-danger col-12">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                      <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                    </svg>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </li>
+                  </ul>
+                  <div>
+                    <form ng-controller="PeticionesController">
+                      <input type="hidden" ng-model="id" id="id" value="{{movies.id}}">
+                      <label for="comment" class="form-label">¿Deeas agregar un comentario?</label>
+                      <textarea ng-model="comment" class="form-control mb-3"  id="comment" rows="3" required></textarea>
+                      <!-- <input type="text" ng-model="comment" id="comment"> -->
+                      <button ng-click="enviarDatos()" class="btn btn-success">Enviar comentario</button>
+                    </form>
+                  </div>
+                </div>  
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
