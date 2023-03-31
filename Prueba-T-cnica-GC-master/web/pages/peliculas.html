@@ -3,8 +3,9 @@
     <div ng-controller="PeliculasController">
       <div class="card p-4 mb-3 bg-secondary">
           <div class="row">
+            <label for="" class="form-label fs-5 text-light">¿Deseas buscar una pelicula?</label>
             <div class="col-8">
-              <input type="text" class="form-control" ng-model="query" placeholder="ingresa el nombre de la pelicula que quieras buscar...">
+              <input type="text" class="form-control" ng-model="query" placeholder="Escribe aquí la pelicula que deseas buscar...">
             </div>
             <div class="col-4">
               <button class="btn col-12 text-light"style="background-color:#121144;" ng-click="search()" id="button-addon2">Buscar pelicula</button>
@@ -84,7 +85,7 @@
                       <label for="comment" class="form-label">¿Deeas agregar un comentario?</label>
                       <textarea ng-model="comment" class="form-control mb-3"  id="comment" rows="3" required></textarea>
                       <!-- <input type="text" ng-model="comment" id="comment"> -->
-                      <button ng-click="enviarDatos()" class="btn btn-success">Enviar comentario</button>
+                      <button ng-click="enviarDatos(movies.id)" class="btn btn-success">Enviar comentario</button>
                     </form>
                   </div>
                 </div>  

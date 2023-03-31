@@ -54,12 +54,14 @@ app.controller("PeliculasController", ["$scope", "$http", function($scope, $http
 
 app.controller("PeticionesController", ['$scope', '$window', '$http', function($scope, $window, $http) {
 // Crear datos
-$scope.enviarDatos = function() {
+$scope.enviarDatos = function(idEnviarComentario) {
   // Definir los datos que se enviarán en la solicitud POST
   var data = {
     comment: $scope.comment,
-    idMovie: parseInt(document.getElementById('id').value)
+    idMovie: parseInt(idEnviarComentario)
   };
+  console.log(idEnviarComentario);
+  console.log(data);
   if (!data.comment || data.comment.trim() === '') {
     // Si comment es nulo, undefined o una cadena vacía, muestra un mensaje de error
     console.error('El comentario no puede estar vacío.');
@@ -81,6 +83,7 @@ $scope.enviarDatos = function() {
     $http(options)
       .then(function(response) {
         // Agrega el nuevo comentario a la matriz de comentarios
+        console.log(response.data);
         $scope.comentarios.push(response.data);
         // Mostrar mensaje de éxito en una alerta
         alert("El comentario se agregó correctamente.");
@@ -117,8 +120,9 @@ app.controller("EditarController", ["$scope", "$http", function($scope, $http) {
     .then(function(response) {
       // Manejar la respuesta del API
       // $scope.comentarios.push(response.data);
+            console.log(response.data);
       alert("El comentario se actualizó correctamente.");
-      console.log(response.data);
+
     })
     .catch(function(error) {
       // Manejar errores de la solicitud
